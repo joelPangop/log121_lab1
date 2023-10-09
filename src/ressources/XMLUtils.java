@@ -160,7 +160,7 @@ public class XMLUtils {
             for (int i = 0; i < metadonnees.getLength(); i++) {
                 Element simulation = (Element) simulations.item(i);
 
-                // Accédez aux éléments "usine" sous "metadonnees"
+                // Accédez aux éléments "usine" sous "simulation"
                 NodeList usines = simulation.getElementsByTagName("usine");
 
                 for (int j = 0; j < usines.getLength(); j++) {

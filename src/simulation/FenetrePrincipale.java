@@ -15,19 +15,17 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
     private static final Dimension DIMENSION = new Dimension(700, 700);
 
     public FenetrePrincipale() {
-//        PanneauPrincipal panneauPrincipal = new PanneauPrincipal();
-        Reseau reseau = new Reseau();
+        PanneauPrincipal panneauPrincipal = new PanneauPrincipal();
 
         MenuFenetre menuFenetre = new MenuFenetre();
-add(reseau);
-//        add(panneauPrincipal);
+
+        add(panneauPrincipal);
         add(menuFenetre, BorderLayout.NORTH);
         // Faire en sorte que le X de la fenêtre ferme la fenêtre
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle(TITRE_FENETRE);
         setSize(DIMENSION);
 
-//        add(new UsineSimulation());
         // Rendre la fenêtre visible
         setVisible(true);
         // Mettre la fenêtre au centre de l'écran
