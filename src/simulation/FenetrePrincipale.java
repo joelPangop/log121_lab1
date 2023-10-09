@@ -1,6 +1,7 @@
 package simulation;
 
-import models.AssesoireEnum;
+import Platform.Reseau;
+import Materials.AssesoireEnum;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,11 +15,12 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
     private static final Dimension DIMENSION = new Dimension(700, 700);
 
     public FenetrePrincipale() {
-        PanneauPrincipal panneauPrincipal = new PanneauPrincipal();
+//        PanneauPrincipal panneauPrincipal = new PanneauPrincipal();
+        Reseau reseau = new Reseau();
 
         MenuFenetre menuFenetre = new MenuFenetre();
-
-        add(panneauPrincipal);
+add(reseau);
+//        add(panneauPrincipal);
         add(menuFenetre, BorderLayout.NORTH);
         // Faire en sorte que le X de la fenêtre ferme la fenêtre
         setDefaultCloseOperation(EXIT_ON_CLOSE);
