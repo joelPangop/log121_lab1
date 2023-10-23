@@ -4,7 +4,7 @@ import Materials.*;
 import Platform.Chemin;
 import Platform.Noeud;
 import com.sun.org.apache.xerces.internal.dom.DeferredTextImpl;
-import Materials.AssesoireEnum;
+import Materials.ComposantEnum;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -32,15 +32,15 @@ public class XMLUtils {
 
     public List<Noeud> noeuds;
 
-    public List<Platform.Chemin> chemins;
+    public List<Chemin> chemins;
 
-    public static XMLUtils instance;
+    private static XMLUtils instance;
 
     private XMLUtils() {
-        loadXMLData();
+//        loadXMLData();
     }
 
-    public void loadXMLData() {
+    public void loadXMLData(String xmlFilePath) {
         noeuds = new ArrayList<>();
         chemins = new ArrayList<>();
         composanteUsines = new HashMap<>();
@@ -50,6 +50,7 @@ public class XMLUtils {
             DocumentBuilder builder = factory.newDocumentBuilder();
 
             // Chargez le fichier XML
+//            File xmlFile = new File(xmlFilePath); // Remplacez par le chemin de votre fichier XML
             File xmlFile = new File("src/ressources/configuration.xml"); // Remplacez par le chemin de votre fichier XML
             Document document = builder.parse(xmlFile);
 
@@ -109,13 +110,13 @@ public class XMLUtils {
 
                     switch (type) {
                         case "usine-matiere":
-                            usineMatiere = new UsineMatiere(type, interval_production, new ComposanteUsine(quantite, AssesoireEnum.METAL.getPath(), typeSortie), icones);
-                            composanteUsines.put(typeSortie,  new ComposanteUsine(quantite, AssesoireEnum.METAL.getPath(), typeSortie));
+                            usineMatiere = new UsineMatiere(type, interval_production, new ComposanteUsine(quantite, ComposantEnum.METAL.getPath(), typeSortie), icones);
+                            composanteUsines.put(typeSortie,  new ComposanteUsine(quantite, ComposantEnum.METAL.getPath(), typeSortie));
                             break;
                         case "usine-aile":
                             quantite = Integer.parseInt(entreeElements.getAttribute("quantite"));
-                            ComposanteUsine aileEntree = new ComposanteUsine(quantite, AssesoireEnum.METAL.getPath(), typeEntree);
-                            ComposanteUsine aileSortie = new ComposanteUsine(quantite, AssesoireEnum.AILE.getPath(), typeSortie);
+                            ComposanteUsine aileEntree = new ComposanteUsine(quantite, ComposantEnum.METAL.getPath(), typeEntree);
+                            ComposanteUsine aileSortie = new ComposanteUsine(quantite, ComposantEnum.AILE.getPath(), typeSortie);
                             usineAile = new UsineAile(type, interval_production, aileEntree, aileSortie, icones);
                             composanteUsines.put(typeSortie, aileSortie);
                             composanteUsines.put(typeEntree, aileEntree);
@@ -123,8 +124,8 @@ public class XMLUtils {
                             break;
                         case "usine-moteur":
                             quantite = Integer.parseInt(entreeElements.getAttribute("quantite"));
-                            ComposanteUsine moteurEntree = new ComposanteUsine(quantite, AssesoireEnum.METAL.getPath(), typeEntree);
-                            ComposanteUsine moteurSortie = new ComposanteUsine(quantite, AssesoireEnum.MOTEUR.getPath(), typeSortie);
+                            ComposanteUsine moteurEntree = new ComposanteUsine(quantite, ComposantEnum.METAL.getPath(), typeEntree);
+                            ComposanteUsine moteurSortie = new ComposanteUsine(quantite, ComposantEnum.MOTEUR.getPath(), typeSortie);
                             usineMoteur = new UsineMoteur(type, interval_production, moteurEntree, moteurSortie, icones);
                             composanteUsines.put(typeSortie, moteurSortie);
                             composanteUsines.put(typeEntree, moteurEntree);
@@ -138,9 +139,9 @@ public class XMLUtils {
                             }
                             int quantite1 = Integer.parseInt(entreeElement.getAttribute("quantite"));
 
-                            ComposanteUsine assemblageEntree = new ComposanteUsine(quantite, AssesoireEnum.AILE.getPath(), typeEntree);
-                            ComposanteUsine assemblageEntree1 = new ComposanteUsine(quantite1,AssesoireEnum.MOTEUR.getPath(), typeEntree1);
-                            ComposanteUsine assemblageSortie = new ComposanteUsine(quantite, AssesoireEnum.AVION.getPath(), typeSortie);
+                            ComposanteUsine assemblageEntree = new ComposanteUsine(quantite, ComposantEnum.AILE.getPath(), typeEntree);
+                            ComposanteUsine assemblageEntree1 = new ComposanteUsine(quantite1, ComposantEnum.MOTEUR.getPath(), typeEntree1);
+                            ComposanteUsine assemblageSortie = new ComposanteUsine(quantite, ComposantEnum.AVION.getPath(), typeSortie);
                             usineAssemblage = new UsineAssemblage(type, interval_production, assemblageEntree, assemblageEntree1, assemblageSortie, icones);
                             composanteUsines.put(typeSortie, assemblageSortie);
                             composanteUsines.put(typeEntree1, assemblageEntree1);
@@ -149,7 +150,7 @@ public class XMLUtils {
 
                         case "entrepot":
                             quantite = Integer.parseInt(entreeElements.getAttribute("capacite"));
-                            composanteEntrepot = new ComposanteEntrepot(quantite, AssesoireEnum.AVION.getPath(), typeEntree);
+                            composanteEntrepot = new ComposanteEntrepot(quantite, ComposantEnum.AVION.getPath(), typeEntree);
                             entrepot = new Entrepot(type, composanteEntrepot, icones);
                             break;
                     }
@@ -218,7 +219,21 @@ public class XMLUtils {
                             .filter(x -> x.getId() == vers)  // Filtrez les éléments supérieurs à 5
                             .findAny().get();
 
-                    Chemin chemin = new Chemin(source, destination);
+                    Point vitesse = null;
+                    if(de == 11 && vers == 21)
+                        vitesse = new Point(0,1);
+                    if(de == 21 && vers == 41)
+                        vitesse = new Point(1,1);
+                    if(de == 41 && vers == 51)
+                        vitesse = new Point(1,0);
+                    if(de == 12 && vers == 31)
+                        vitesse = new Point(1,0);
+                    if(de == 13 && vers == 31)
+                        vitesse = new Point(-1,-1);
+                    if(de == 31 && vers == 41)
+                        vitesse = new Point(-1,-1);
+
+                    Chemin chemin = new Chemin(source, destination, vitesse);
                     chemins.add(chemin);
                 }
             }
