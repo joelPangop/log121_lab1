@@ -1,13 +1,17 @@
 package Materials;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class AbstractComposante implements Iimage{
+public class AbstractComposante implements Iimage {
 
     protected String type;
     protected BufferedImage image;
     protected Point position;
+
+    protected Timer timer;
+
 
     public AbstractComposante(String type) {
         this.type = type;
@@ -15,7 +19,7 @@ public class AbstractComposante implements Iimage{
 
     @Override
     public BufferedImage getImage() {
-        return null;
+        return this.image;
     }
 
     @Override
@@ -26,6 +30,10 @@ public class AbstractComposante implements Iimage{
     @Override
     public void drawImage(Graphics g, int x, int y) {
         g.drawImage(image, x, y, null);
+    }
+
+    public void drawImage(Graphics g) {
+        g.drawImage(image, (int)position.getX(), (int) position.getY(), null);
     }
 
     public String getType() {
@@ -43,4 +51,5 @@ public class AbstractComposante implements Iimage{
     public void setPosition(Point position) {
         this.position = position;
     }
+
 }

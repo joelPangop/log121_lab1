@@ -1,15 +1,15 @@
 package Materials;
 
-public enum AssesoireEnum {
+public enum ComposantEnum {
 
     METAL("src/ressources/metal.png"),
     AILE("src/ressources/aile.png"),
     AVION("src/ressources/avion.png"),
-    MOTEUR("src/ressources/moteur");
+    MOTEUR("src/ressources/moteur.png");
 
     private final String path;
 
-    AssesoireEnum(String s) {
+    ComposantEnum(String s) {
         this.path = s;
     }
 

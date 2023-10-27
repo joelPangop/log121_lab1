@@ -9,8 +9,6 @@ public class Simulation {
 		Environnement environnement = new Environnement();
 		FenetrePrincipale fenetre = new FenetrePrincipale();
 
-//		List<Usine> usineList = XmlParsing.usineListParse();
-
 		environnement.addPropertyChangeListener(fenetre);
 		environnement.execute();
 	}

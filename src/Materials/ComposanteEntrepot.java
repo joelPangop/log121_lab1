@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
-public class ComposanteEntrepot extends AbstractComposante {
+public class ComposanteEntrepot extends AbstractComposante{
 
     private int capacite;
 
@@ -26,4 +26,6 @@ public class ComposanteEntrepot extends AbstractComposante {
     public void setCapacite(int capacite) {
         this.capacite = capacite;
     }
+
+
 }
