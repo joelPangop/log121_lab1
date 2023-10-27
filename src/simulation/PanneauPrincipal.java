@@ -1,143 +1,82 @@
 package simulation;
 
-import Materials.ComposanteUsine;
 import Platform.Chemin;
 import Platform.Reseau;
 import ressources.XMLUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.stream.Collectors;
 
 public class PanneauPrincipal extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    // Variables temporaires de la demonstration:
-    private Point position = new Point(0, 0);
-    private Point vitesse = new Point(1, 1);
-    private int taille = 32;
-
-    private int repeatCount = 3;  // Nombre de répétitions
-    private int currentRepeat = 0;  // Répétition actuelle
-
-    private int currentImageIndex = 0;
-
+    //On declare une variable pour dessiner le reseau dans le panneau
     private Reseau reseau;
-
-    java.util.List<ComposanteUsine> composanteUsines;
-    private Timer timer;
-
-    MenuFenetre menuFenetre;
+    Chemin cheminMetal1;
+    Chemin cheminAile;
+    Chemin cheminAvion;
+    Chemin cheminMoteur;
+    Chemin cheminMetal2;
+    Chemin cheminMetal3;
 
     public PanneauPrincipal() {
 //        reseau = new Reseau();
         reseau = new Reseau();
-        XMLUtils.getInstance().loadXMLData("C:\\Users\\User\\WorkSpace\\log121_lab1\\src\\ressources\\configuration.xml");
-//
-//        if (XMLUtils.getInstance().chemins != null) {
-//            for (Chemin chemin : XMLUtils.getInstance().chemins) {
-//                if (chemin.getSource().getId() == 11 && chemin.getDestination().getId() == 21) {
-//                    int i = 0;
-//                    while (i < 10) {
-//                        ComposanteUsine composanteUsine = XMLUtils.getInstance().composanteUsines.get("metal");
-//                        composanteUsine.setPosition(new Point((int) chemin.getSource().getPosition().getX(), (int) chemin.getSource().getPosition().getY()));
-//                        composanteUsines.add(composanteUsine);
-//                        i++;
-//                    }
-//                }
-//            }
-//        }
-    }
 
+        XMLUtils.getInstance().loadXMLData("C:\\Users\\User\\WorkSpace\\log121_lab1\\src\\ressources\\configuration.xml");
+        if (XMLUtils.getInstance().chemins != null) {
+            cheminMetal1 = XMLUtils.getInstance().chemins.stream().filter(ch -> ch == ch.getChemin(11, 21)).collect(Collectors.toList()).get(0);
+            cheminAile = XMLUtils.getInstance().chemins.stream().filter(ch -> ch == ch.getChemin(21, 41)).collect(Collectors.toList()).get(0);
+            cheminMetal1.getDestination().getUsine().attachObserver(cheminAile);
+//            cheminAile.getProductedImages().add(XMLUtils.getInstance().composanteUsines.get("aile").getImage());
+//            cheminAile.getProductedImagePositions().add(new Point(cheminAile.getSource().getPosition().x,cheminAile.getSource().getPosition().y));
+            cheminAvion = XMLUtils.getInstance().chemins.stream().filter(ch -> ch == ch.getChemin(41, 51)).collect(Collectors.toList()).get(0);
+            cheminMoteur = XMLUtils.getInstance().chemins.stream().filter(ch -> ch == ch.getChemin(31, 41)).collect(Collectors.toList()).get(0);
+            cheminMetal2 = XMLUtils.getInstance().chemins.stream().filter(ch -> ch == ch.getChemin(12, 31)).collect(Collectors.toList()).get(0);
+            cheminMetal2.getDestination().getUsine().attachObserver(cheminMoteur);
+            cheminMetal3 = XMLUtils.getInstance().chemins.stream().filter(ch -> ch == ch.getChemin(13, 31)).collect(Collectors.toList()).get(0);
+            cheminMetal2.getDestination().getUsine().attachObserver(cheminMoteur);
+            cheminMoteur.getDestination().getUsine().attachObserver(cheminAvion);
+            cheminAile.getDestination().getUsine().attachObserver(cheminAvion);
+
+            cheminAvion.getDestination().getUsine().attachObserver(cheminMetal1);
+            cheminAvion.getDestination().getUsine().attachObserver(cheminMetal2);
+            cheminAvion.getDestination().getUsine().attachObserver(cheminMetal3);
+            cheminAvion.getDestination().getUsine().attachObserver(cheminAile);
+            cheminAvion.getDestination().getUsine().attachObserver(cheminMoteur);
+
+            add(cheminMetal1);
+            add(cheminAile);
+            add(cheminAvion);
+            add(cheminMoteur);
+            add(cheminMetal2);
+            add(cheminMetal3);
+            cheminMetal1.startAnimation();
+            cheminMetal2.startAnimation();
+            cheminMetal3.startAnimation();
+        }
+    }
+int i = 0;
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        // On ajoute à la position le delta x et y de la vitesse
 //        position.translate(vitesse.x, vitesse.y);
 //        g.fillRect(position.x, position.y, taille, taille);
-
+        i++;
         if (reseau != null) {
-            add(reseau);
+//            add(reseau);
             reseau.paint(g);
-//            composanteUsine.drawImage(g);
-            for (Chemin chemin : XMLUtils.getInstance().chemins) {
-                if (chemin.getSource().getId() == 11 && chemin.getDestination().getId() == 21) {
-//                    ComposanteUsine composanteUsine = XMLUtils.getInstance().composanteUsines.get("metal");
-//                    composanteUsine.setPosition(new Point((int) chemin.getSource().getPosition().getX(), (int) chemin.getSource().getPosition().getY()));
-//                    composanteUsine.drawImage(g);
-//                    deplacerMateriel(composanteUsine);
 
-//                    timer = new Timer(5000, new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-                            ComposanteUsine composanteUsine = XMLUtils.getInstance().composanteUsines.get("metal");
-                            composanteUsine.setPosition(new Point((int) chemin.getSource().getPosition().getX(), (int) chemin.getSource().getPosition().getY()));
-                            composanteUsine.drawImage(g);
-//                        }
-//                    });
-//                    timer.start();
-                }
-            }
-//            for (Chemin chemin : XMLUtils.getInstance().chemins) {
-//                if (chemin.getSource().getId() == 11 && chemin.getDestination().getId() == 21) {
-//                    timer = new Timer(chemin.getSource().getUsine().getIntervaleProduction(), null);  // Met à jour toutes les 1000 millisecondes (1 seconde)
-//                    timer.setInitialDelay(0);  // Démarrage immédiat
-//                    timer.start();
-//                    composanteUsine.getPosition().translate(1, 0);
-//                }
-//            }
-//            for (Chemin chemin : XMLUtils.getInstance().chemins) {
-//                if (chemin.getSource().getId() == 11 && chemin.getDestination().getId() == 21) {
-//                    if (chemin.getSource().getPosition().getX() < chemin.getDestination().getPosition().getX()) {
-//                        composanteUsine.getPosition().translate(1, 0);
-//                        composanteUsine.drawImage(g, (int) composanteUsine.getPosition().getX(), (int) composanteUsine.getPosition().getY());
-//                    }
-//
-//                    // Vérifiez si l'animation doit être répétée
-//                    if (composanteUsine.getPosition().getX() == chemin.getDestination().getPosition().getX()) {
-//                        currentRepeat++;
-//                        if (currentRepeat < repeatCount) {
-//                            composanteUsine.setPosition(new Point((int) chemin.getSource().getPosition().getX(), (int) chemin.getSource().getPosition().getY()));
-//                            timer.restart();
-//                        } else {
-//                            // Arrêtez le Timer après le nombre de répétitions spécifié
-//                            timer.stop();
-//                        }
-//                    }
-//                }
-//            }
-//            repaint();zz
+            cheminMetal1.paint(g);
+            cheminAile.paint(g);
+            cheminAvion.paint(g);
+            cheminMoteur.paint(g);
+            cheminMetal2.paint(g);
+            cheminMetal3.paint(g);
+
         }
-    }
-
-    public void deplacerMateriel(ComposanteUsine composanteUsine) {
-        if (reseau != null && XMLUtils.getInstance().chemins != null) {
-            for (Chemin chemin : XMLUtils.getInstance().chemins) {
-                if (chemin.getSource().getId() == 11 && chemin.getDestination().getId() == 21) {
-
-//                        timer = new Timer(chemin.getSource().getUsine().getIntervaleProduction(), null);  // Met à jour toutes les 1000 millisecondes (1 seconde)
-                    timer = new Timer(chemin.getSource().getUsine().getIntervaleProduction(), new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-//                            composanteUsine.deplacer(g, chemin);
-                            while ((int) composanteUsine.getPosition().getX() <= chemin.getDestination().getPosition().getX()) {
-                                composanteUsine.getPosition().translate(1, 0);
-                                repaint();
-
-                            }
-                        }
-                    });
-                }
-            }
-        }
-    }
-
-    public void startAnimation() {
-        timer.setInitialDelay(0);  // Démarrage immédiat
-
-        timer.start();
     }
 
     public Reseau getReseau() {
@@ -146,5 +85,53 @@ public class PanneauPrincipal extends JPanel {
 
     public void setReseau(Reseau reseau) {
         this.reseau = reseau;
+    }
+
+    public Chemin getCheminMetal1() {
+        return cheminMetal1;
+    }
+
+    public void setCheminMetal1(Chemin cheminMetal1) {
+        this.cheminMetal1 = cheminMetal1;
+    }
+
+    public Chemin getCheminAile() {
+        return cheminAile;
+    }
+
+    public void setCheminAile(Chemin cheminAile) {
+        this.cheminAile = cheminAile;
+    }
+
+    public Chemin getCheminAvion() {
+        return cheminAvion;
+    }
+
+    public void setCheminAvion(Chemin cheminAvion) {
+        this.cheminAvion = cheminAvion;
+    }
+
+    public Chemin getCheminMoteur() {
+        return cheminMoteur;
+    }
+
+    public void setCheminMoteur(Chemin cheminMoteur) {
+        this.cheminMoteur = cheminMoteur;
+    }
+
+    public Chemin getCheminMetal2() {
+        return cheminMetal2;
+    }
+
+    public void setCheminMetal2(Chemin cheminMetal2) {
+        this.cheminMetal2 = cheminMetal2;
+    }
+
+    public Chemin getCheminMetal3() {
+        return cheminMetal3;
+    }
+
+    public void setCheminMetal3(Chemin cheminMetal3) {
+        this.cheminMetal3 = cheminMetal3;
     }
 }

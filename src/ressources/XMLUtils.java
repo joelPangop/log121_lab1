@@ -221,17 +221,17 @@ public class XMLUtils {
 
                     Point vitesse = null;
                     if(de == 11 && vers == 21)
-                        vitesse = new Point(0,1);
+                        vitesse = new Point(5,0);
                     if(de == 21 && vers == 41)
-                        vitesse = new Point(1,1);
+                        vitesse = new Point(-5,+5);
                     if(de == 41 && vers == 51)
-                        vitesse = new Point(1,0);
+                        vitesse = new Point(5,0);
                     if(de == 12 && vers == 31)
-                        vitesse = new Point(1,0);
+                        vitesse = new Point(5,0);
                     if(de == 13 && vers == 31)
-                        vitesse = new Point(-1,-1);
+                        vitesse = new Point(-5,-5);
                     if(de == 31 && vers == 41)
-                        vitesse = new Point(-1,-1);
+                        vitesse = new Point(-5,-5);
 
                     Chemin chemin = new Chemin(source, destination, vitesse);
                     chemins.add(chemin);

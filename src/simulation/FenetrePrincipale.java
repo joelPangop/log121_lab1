@@ -1,8 +1,5 @@
 package simulation;
 
-import Materials.AbstractComposante;
-import Materials.ComposantEnum;
-import Materials.ComposanteUsine;
 import Platform.Chemin;
 import Platform.Reseau;
 import ressources.XMLUtils;
@@ -12,6 +9,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -23,11 +21,12 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
     private static final Dimension DIMENSION = new Dimension(700, 700);
     PanneauPrincipal panneauPrincipal;
     MenuFenetre menuFenetre;
-
+    private java.util.List<BufferedImage> images;
+    private java.util.List<Point> imagePositions;
+    private int currentImageIndex = 0;
+    private int speed = 5;
     private Timer timer;
 
-    private int repeatCount = 3;  // Nombre de répétitions
-    private int currentRepeat = 0;  // Répétition actuelle
 
     public FenetrePrincipale() {
         panneauPrincipal = new PanneauPrincipal();
@@ -78,8 +77,20 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("TEST")) {
             repaint();
-            System.out.println(ComposantEnum.AILE.getPath());
             System.out.println(evt.getNewValue());
+
+        }
+        if (evt.getPropertyName().equals("chemin1")) {
+            panneauPrincipal.setCheminMetal1((Chemin) evt.getNewValue());
+            repaint();
+//            System.out.println(evt.getNewValue());
+
+        }
+        if (evt.getPropertyName().equals("chemin")) {
+            panneauPrincipal.setCheminMetal1((Chemin) evt.getNewValue());
+            repaint();
+//            System.out.println(evt.getNewValue());
+
         }
     }
 

@@ -1,12 +1,7 @@
 package Materials;
 
-import Platform.Chemin;
-
 import javax.swing.*;
-import javax.swing.text.Position;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 public class AbstractComposante implements Iimage {
@@ -17,13 +12,14 @@ public class AbstractComposante implements Iimage {
 
     protected Timer timer;
 
+
     public AbstractComposante(String type) {
         this.type = type;
     }
 
     @Override
     public BufferedImage getImage() {
-        return null;
+        return this.image;
     }
 
     @Override
@@ -38,14 +34,6 @@ public class AbstractComposante implements Iimage {
 
     public void drawImage(Graphics g) {
         g.drawImage(image, (int)position.getX(), (int) position.getY(), null);
-    }
-
-    public void deplacer(Graphics g, Chemin chemin) {
-        if (chemin.getSource().getId() == 11 && chemin.getDestination().getId() == 21) {
-//            while ((int) this.position.getX() <= chemin.getDestination().getPosition().getX()) {
-//                this.position.translate(1, 0);
-//            }
-        }
     }
 
     public String getType() {
@@ -63,4 +51,5 @@ public class AbstractComposante implements Iimage {
     public void setPosition(Point position) {
         this.position = position;
     }
+
 }
